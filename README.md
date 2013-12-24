@@ -20,9 +20,9 @@ m.getDeviceInfo() @=> string devices[][];
 for (0 => int i ; i < devices.cap() ; i++) {
   <<< devices[i][0], devices[i][1], devices[i][2] >>>;
   if (devices[i][1] == "monome 128") {
-    m.gridSize("128h");
-    Std.atoi(devices[i][2]) => int port;
-    m.connect(port);
+    "128h" => m.gridSize;
+    devices[i][2] => Std.atoi => int port;
+    port => m.connect;
   }
 }
 
@@ -32,7 +32,8 @@ m.ledAllOff();
 
 ```
 
-Then spork a shred watching for the m.button Event.  
+Then spork a shred watching for the m.button Event.  For now, look at
+the code to see how to use this, but documentation will follow.
 
 Initialization is a little awkward, but I wanted to accommodate the
 lucky few who have multiple grids.
