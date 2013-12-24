@@ -29,7 +29,6 @@ for (0 => int i ; i < devices.cap() ; i++) {
 m.ledAllOn();
 0.5::second => now;
 m.ledAllOff();
-
 ```
 
 Then spork a shred watching for the m.button Event.  For now, look at
