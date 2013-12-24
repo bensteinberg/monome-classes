@@ -53,14 +53,13 @@ public class MonomeGrid
   //vars
   int x, y, state;
   //float tiltVals[2];
-
-  // get list of devices with getDeviceInfo();
-  // set size with gridSize(); then
-  // call connect() with the appropriate port
   int enginePort;
   string namespace;
   int clientPort;
 
+  // get list of devices with getDeviceInfo();
+  // set size with gridSize(); then
+  // call connect() with the appropriate port
   fun void connect(int port)
   {
     port => enginePort;
@@ -75,6 +74,9 @@ public class MonomeGrid
     engine.setHost(engineHost, enginePort);
   }
 
+  // returns an array of arrays,
+  // [id, type, port] -- decide which you want,
+  // then chuck the port to connect()
   fun string[][] getDeviceInfo()
   {
     string result[0][0];
@@ -161,11 +163,11 @@ public class MonomeGrid
 	    press.getInt() => int my_value;
 	    if (my_value == 0)
 	      {
-		buttonReleased(my_x, my_y);
+		_buttonReleased(my_x, my_y);
 	      }
 	    else
 	      {
-		buttonPressed(my_x, my_y);
+		_buttonPressed(my_x, my_y);
 	      }
 	  }
       }
@@ -197,7 +199,7 @@ public class MonomeGrid
   }
   */
   
-  fun void buttonPressed(int my_x, int my_y)
+  fun void _buttonPressed(int my_x, int my_y)
   {
     my_x => x;
     my_y => y;
@@ -205,13 +207,15 @@ public class MonomeGrid
     button.broadcast();
   }
 
-  fun void buttonReleased(int my_x, int my_y)
+  fun void _buttonReleased(int my_x, int my_y)
   {
     my_x => x;
     my_y => y;
     0 => state;
     button.broadcast();
   }
+
+  // here are the functions for managing LEDs
 
   fun void ledOn(int my_x, int my_y)
   {
