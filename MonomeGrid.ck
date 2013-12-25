@@ -63,6 +63,8 @@ public class MonomeGrid
   fun void connect(int port)
   {
     port => enginePort;
+    serialOscRecvPort => client.port;
+    client.listen();
     _getPrefix() => namespace;
     _getClientPort() => clientPort;
     clientPort => client.port;
@@ -72,30 +74,6 @@ public class MonomeGrid
     spork ~ _waitForEvent();
     //spork ~ _waitForTilt();
     engine.setHost(engineHost, enginePort);
-  }
-
-  // returns an array of arrays,
-  // [id, type, port] -- decide which you want,
-  // then chuck the port to connect()
-  fun string[][] getDeviceInfo()
-  {
-    string result[0][0];
-    engine.setHost(engineHost, serialOscXmitPort);
-    serialOscRecvPort => client.port; 
-    client.listen();
-    client.event("/serialosc/device,ssi") @=> OscEvent device_event;
-    engine.startMsg ( "/serialosc/list", "si");
-    engineHost => engine.addString;
-    serialOscRecvPort => engine.addInt;
-    device_event => now;
-    while (device_event.nextMsg() != 0) {
-      device_event.getString() => string id;
-      device_event.getString() => string type;
-      device_event.getInt() => int port;
-      [id, type, Std.itoa(port)] @=> string device[];
-      result << device;
-    }
-    return result;
   }
 
   //initialize standard sizes: 64, 128h, 128v, 256
