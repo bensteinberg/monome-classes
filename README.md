@@ -21,3 +21,7 @@ Although it has a mechanism for detecting presses, I have a newer arc
 Together, init.ck and test.ck demonstrate the methods, variables, and
 events available.  At the moment, identification and management of
 grid size, orientation, and number of arc encoders are left to the user.
+
+arcinit.ck and arctest.ck are an example of using the arc's encoders
+to control the frequencies of an oscillator and its modulator, as well
+as the use of maps to write to the arc's LEDs.
