@@ -33,7 +33,6 @@ public class MonomeArc
   Event turn;
   Event push;
   
-  12002 => int serialOscXmitPort;
   12003 => int serialOscRecvPort;
 
   "localhost" => string engineHost;

@@ -41,7 +41,6 @@ public class MonomeGrid
   Event button;
   //Event tilted;
   
-  12002 => int serialOscXmitPort;
   12003 => int serialOscRecvPort;
 
   "localhost" => string engineHost;
