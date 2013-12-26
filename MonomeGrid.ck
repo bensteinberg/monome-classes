@@ -4,7 +4,7 @@
 
   A class for connecting to a monome grid via serialosc
 
-  v0.1
+  v0.2
 
   Copyright 2013 Ben Steinberg
 

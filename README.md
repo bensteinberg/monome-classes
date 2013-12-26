@@ -1,5 +1,7 @@
 monome-classes
 ==============
+MonomeDevice.ck contains a class for detecting monome devices in ChucK.
+
 MonomeGrid.ck contains a class for using a monome grid in ChucK.  It
 is derived from the LicK Library's
 [Monome.ck](https://github.com/heuermh/lick/blob/master/Monome.ck) and
@@ -7,32 +9,15 @@ Raymond Weiterkamp's
 [monomeclass0.4.ck](http://monome.org/docs/_media/app:monomeclass0.4.ck.zip),
 but communicates with the grid via serialosc and uses the current
 (late 2013) OSC messages.  It does not yet handle tilt or
-varibrightness. 
+varibrightness.  Since I am traveling and don't have my grid with me,
+I can't confirm that the current file works, but will be able to test
+on or around 2013-01-04.  I am not quite happy with the methods
+available, and may limit them.
 
-This file will be joined shortly by MonomeArc.ck and examples of use.
-For now, add the MonomeGrid.ck shred in the miniAudicle, then add a
-shred with code like this:
+MonomeArc.ck contains a class for using a monome arc in ChucK.
+Although it has a mechanism for detecting presses, I have a newer arc
+2, so I can't test it.
 
-```
-MonomeGrid m;
-m.getDeviceInfo() @=> string devices[][];
-
-for (0 => int i ; i < devices.cap() ; i++) {
-  <<< devices[i][0], devices[i][1], devices[i][2] >>>;
-  if (devices[i][1] == "monome 128") {
-    "128h" => m.gridSize;
-    devices[i][2] => Std.atoi => int port;
-    port => m.connect;
-  }
-}
-
-m.ledAllOn();
-0.5::second => now;
-m.ledAllOff();
-```
-
-Then spork a shred watching for the m.button Event.  For now, look at
-the code to see how to use this, but documentation will follow.
-
-Initialization is a little awkward, but I wanted to accommodate the
-lucky few who have multiple grids.
+Together, init.ck and test.ck demonstrate the methods, variables, and
+events available.  At the moment, identification and management of
+grid size, orientation, and number of arc encoders are left to the user.

@@ -40,7 +40,7 @@ public class MonomeDevice
   // returns an array of arrays,
   // [id, type, port] -- decide which you want,
   // declare an arc or a grid, then
-  // chuck the port to  arc.connect() or
+  // chuck the port to arc.connect() or
   // grid.connect()
   fun string[][] getDeviceInfo()
   {
