@@ -64,13 +64,11 @@ fun void turn_responder(Event e)
     e => now;
     if (arc.encoder == 0) {
       osc.freq() + arc.delta => osc.freq;
-      mapshift(0, arc.delta);
-      (0, map[0]) => arc.ledMap;
     } else {
       mod.freq() + arc.delta => mod.freq;
-      mapshift(1, arc.delta);
-      (1, map[1]) => arc.ledMap;
     }
+    mapshift(arc.encoder, arc.delta);
+    (arc.encoder, map[arc.encoder]) => arc.ledMap;
     1::ms => now;
   }
 }
