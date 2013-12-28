@@ -31,6 +31,7 @@ public class MonomeArc
   OscEvent press;
 
   Event turn;
+  Event turns[4];
   Event push;
   
   12003 => int serialOscRecvPort;
@@ -110,6 +111,7 @@ public class MonomeArc
 	    rotate.getInt() => encoder;
 	    rotate.getInt() => delta;
 	    turn.broadcast();
+	    turns[encoder].broadcast();
 	  }
       }
   }
