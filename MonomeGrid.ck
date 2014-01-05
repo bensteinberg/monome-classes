@@ -39,7 +39,7 @@ public class MonomeGrid
   OscEvent tilt;
 
   Event button;
-  //Event tilted;
+  Event tilted;
   
   12003 => int serialOscRecvPort;
 
@@ -51,7 +51,7 @@ public class MonomeGrid
 
   //vars
   int x, y, state;
-  //float tiltVals[2];
+  int tiltVals[4];
   int enginePort;
   string namespace;
   int clientPort;
@@ -71,7 +71,7 @@ public class MonomeGrid
     client.event(namespace + "/grid/key, iii") @=> press;
     client.event(namespace + "/tilt, iiii") @=> tilt;
     spork ~ _waitForEvent();
-    //spork ~ _waitForTilt();
+    spork ~ _waitForTilt();
     engine.setHost(engineHost, enginePort);
   }
 
@@ -150,31 +150,23 @@ public class MonomeGrid
       }
   }
 
-  /*  
+
   fun void _waitForTilt()
   {
     while (true)
       {
 	tilt => now;
-	<<< "got", "a tilt" >>>;
-	while (tilt.nextMsg())
-	  {
-	    // press.getInt() => int which;
-	    // press.getInt() => int my_x;
-	    // press.getInt() => int my_y;
-	    // press.getInt() => int my_z;
-	    press.getFloat() => float first;
-	    press.getFloat() => float next;
-	    <<< first, next >>>;
-	    //<<< which, my_x, my_y, my_z >>>;
-	    //[which, my_x, my_y, my_z] @=> int my_tiltVals[];
-	    [first, next] @=> float my_tiltVals[];
-	    my_tiltVals @=> tiltVals;
-	    tilted.broadcast();
-	  }
+	while (tilt.nextMsg()) {
+	  tilt.getInt() => int which;
+	  tilt.getInt() => int my_x;
+	  tilt.getInt() => int my_y;
+	  tilt.getInt() => int my_z;
+	  [which, my_x, my_y, my_z] @=> tiltVals;
+	  tilted.broadcast();
+	}
       }
   }
-  */
+
   
   fun void _buttonPressed(int my_x, int my_y)
   {
@@ -350,14 +342,12 @@ public class MonomeGrid
     val => engine.addInt;
   }
 
-  /*
   fun void tiltSet(int n, int s)
   {
     engine.startMsg(namespace + "/tilt/set", "ii");
     n => engine.addInt;
     s => engine.addInt;
   }
-  */
   
 }
 

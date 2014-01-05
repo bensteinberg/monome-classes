@@ -14,8 +14,8 @@ for (0 => int i ; i < devices.cap() ; i++) {
     "128h" => grid.gridSize;             // change to match your device
     devices[i][2] => Std.atoi => grid.connect;
     spork ~ buttonResponder(grid.button);
-    //grid.tiltSet(0,1);
-    //spork ~ tiltResponder(grid.tilted);
+    grid.tiltSet(0,1);
+    spork ~ tiltResponder(grid.tilted);
     spork ~ test_grid_leds();
   }
   if (devices[i][1] == "monome arc 2") { // change to match your device
@@ -26,7 +26,7 @@ for (0 => int i ; i < devices.cap() ; i++) {
     spork ~ test_arc_leds();
   }
  }
-20::second => now;
+35::second => now;
 
 fun void test_arc_leds()
 {
@@ -208,17 +208,28 @@ fun void test_grid_leds()
   grid.ledAllOff();
   <<< "goodbye", "!" >>>;
 }  
-/*
-  fun void tiltResponder(Event e)
-  {
+
+// you have to keep track of the original condition of the tilt sensor,
+// as here; you could also write code to "re-zero" the position
+fun void tiltResponder(Event e)
+{
+  -1 => int xOffset;
+  -1 => int yOffset;
   while (true) {
-  e => now;
-  <<< "tilt!", "" >>>;
-  <<< m.tiltVals[0], m.tiltVals[1], m.tiltVals[2], m.tiltVals[3] >>>;
-  1::ms => now;
+    e => now;
+    if (xOffset == -1) {
+      grid.tiltVals[1] => xOffset;
+      grid.tiltVals[2] => yOffset;
+    }
+    if ((Std.abs(grid.tiltVals[1] - xOffset) > 2) || (Std.abs(grid.tiltVals[2] - yOffset) > 2)) {
+      <<< "tilt!", "" >>>;
+      <<< "", "offsets:", xOffset, yOffset >>>;
+      <<< "", "n x y z:", grid.tiltVals[0], grid.tiltVals[1], grid.tiltVals[2], grid.tiltVals[3] >>>;
+    }
+    1::ms => now;
   }
-  }
-*/
+}
+
 
 fun void buttonResponder(Event e)
 {
