@@ -12,17 +12,25 @@ for (0 => int i ; i < devices.cap() ; i++) {
   if (devices[i][1] == "monome 128") {   // change to match your device
     <<< "connecting to", "grid" >>>;
     "128h" => grid.gridSize;             // change to match your device
+    // connect
     devices[i][2] => Std.atoi => grid.connect;
+    // listen for button changes
     spork ~ buttonResponder(grid.button);
+    // turn on and listen for tilt
     grid.tiltSet(0,1);
     spork ~ tiltResponder(grid.tilted);
+    // test LED methods
     spork ~ test_grid_leds();
   }
   if (devices[i][1] == "monome arc 2") { // change to match your device
     <<< "connecting to", "arc on port", devices[i][2] >>>;
+    // connect
     devices[i][2] => Std.atoi => arc.connect;
+    // listen for turn
     spork ~ turn_responder(arc.turn);
+    // listen for push
     spork ~ push_responder(arc.push);
+    // test LED methods
     spork ~ test_arc_leds();
   }
  }
@@ -145,10 +153,8 @@ fun void test_grid_leds()
   <<< "testing", "rowSet()" >>>;
   for (0 => int i ; i < grid.yHeight ; i++) {
     grid.rowSet(0, i, [255, 255]);
-    //  grid.rowSet(8, i, 255);
     0.1::second => now;
     grid.rowSet(0, i, [0, 0]);
-    //grid.rowSet(8, i, 0);
     0.1::second => now;
   }
 
@@ -213,17 +219,17 @@ fun void test_grid_leds()
 // as here; you could also write code to "re-zero" the position
 fun void tiltResponder(Event e)
 {
-  -1 => int xOffset;
-  -1 => int yOffset;
+  -1 => int xOrigin;
+  -1 => int yOrigin;
   while (true) {
     e => now;
-    if (xOffset == -1) {
-      grid.tiltVals[1] => xOffset;
-      grid.tiltVals[2] => yOffset;
+    if (xOrigin == -1) {
+      grid.tiltVals[1] => xOrigin;
+      grid.tiltVals[2] => yOrigin;
     }
-    if ((Std.abs(grid.tiltVals[1] - xOffset) > 2) || (Std.abs(grid.tiltVals[2] - yOffset) > 2)) {
+    if ((Std.abs(grid.tiltVals[1] - xOrigin) > 2) || (Std.abs(grid.tiltVals[2] - yOrigin) > 2)) {
       <<< "tilt!", "" >>>;
-      <<< "", "offsets:", xOffset, yOffset >>>;
+      <<< "", "'zero' values:", xOrigin, yOrigin >>>;
       <<< "", "n x y z:", grid.tiltVals[0], grid.tiltVals[1], grid.tiltVals[2], grid.tiltVals[3] >>>;
     }
     1::ms => now;
